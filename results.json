@@ -41,14 +41,14 @@
     }
   },
   "confidence": {
-    "mean_when_right": 0.45126721262931824,
-    "mean_when_wrong": 0.4149358868598938,
+    "mean_when_right": 0.45272648334503174,
+    "mean_when_wrong": 0.41218751668930054,
     "accuracy_most_confident_third": 0.9,
     "accuracy_least_confident_third": 0.4,
     "n_per_third": 10
   },
-  "device": "mps",
-  "device_name": "Apple Silicon GPU (MPS)",
+  "device": "cpu",
+  "device_name": "CPU",
   "torch_version": "2.14.1",
   "max_length": 128
 }

@@ -35,7 +35,7 @@ The hardest boundary is `reasoned` versus `assertion`. I required support **stat
 
 **Source:** 200 unique, public Hacker News comments collected from the [HN Algolia comments feed](https://hn.algolia.com/api/v1/search_by_date?tags=comment) on October 20, 2026. Each `labels.csv` row has the complete comment text, one label, and a note with a direct source link. HTML tags were removed, entities decoded, and whitespace normalized; comment wording was not shortened. The sample was selected from the 1,000 most recent comments available in one API response. I read more than 40 comments before defining the taxonomy; `research_notes.md` records the candidate distinctions.
 
-**Labeling:** The first 20 rows were classified independently by Codex without preliminary tags. The remaining 180 received simple rule-based preliminary tags; Codex read all of them and corrected 41. The note column records this for each row. **This was AI-assisted work. No student performed the assignment's unaided human cold pass**, so a student should review the first 20 and the full CSV before submitting this as their own work.
+**Labeling:** The first 20 rows were classified independently by Codex without preliminary tags, then reread in a second full-text review; two labels changed. The [review log](data/review_first20.md) records all 20 decisions. The remaining 180 received simple rule-based preliminary tags; Codex read all of them and corrected 41. The note column records this for each row. **This was AI-assisted work, not an unaided human cold pass.**
 
 | Label | Count | Share |
 |---|---:|---:|
@@ -54,13 +54,13 @@ The `assertion` group has only 7 comments in the seed-42 test split. Its F1 will
 
 ## The Training Run
 
-The official starter notebook fine-tuned `distilbert-base-uncased` on a stratified 139/31/30 train/validation/test split. It ran for 3 epochs at learning rate `2e-5`, batch size `16`, maximum length `128`, and seed `42`. I used the notebook defaults and changed only its `LABELS` list to match the CSV. Training ran locally on Apple Silicon MPS with PyTorch 2.14.1. Sections 1–5 wrote `results.json` and `test_split.csv`; the held-out test set contains 10 questions, 13 reasoned claims, and 7 assertions.
+The official starter notebook fine-tuned `distilbert-base-uncased` on a stratified 139/31/30 train/validation/test split. It ran for 3 epochs at learning rate `2e-5`, batch size `16`, maximum length `128`, and seed `42`. I used the notebook defaults and changed only its `LABELS` list to match the CSV. After the second label review, I reran sections 1–5 locally on CPU with PyTorch 2.14.1, replacing `results.json` and `test_split.csv` so they match the corrected CSV. The held-out test set contains 10 questions, 13 reasoned claims, and 7 assertions.
 
 The first held-out run scored **0.533 accuracy** and **0.371 macro F1**. It predicted every true `assertion` as `reasoned`, so `assertion` F1 is **0.000**. These results miss several targets in `criteria.md`; those targets were committed before training and have not been revised. Diagnosing and improving them belongs to the next unit.
 
 ## How I Used AI
 
 1. **Repository audit:** I asked Codex to compare the existing local project with the official starter. It found generated example sentences and a custom Naive Bayes model. I replaced those with the starter notebook and genuine public comments, while keeping the existing Git history.
-2. **Labeling support:** I used simple text rules to propose labels for 180 comments, then had Codex inspect their full text against the written definitions. Codex changed 41 preliminary tags, including comments where a question introduced an argument rather than seeking an answer. The first 20 were Codex's independent pass, not a human cold pass.
+2. **Labeling support:** I used simple text rules to propose labels for 180 comments, then had Codex inspect their full text against the written definitions. Codex changed 41 preliminary tags, including comments where a question introduced an argument rather than seeking an answer. Codex independently labeled and then reread the first 20, changing two more labels. This did not involve human cold labeling.
 
 No hosted model was used for fine-tuning; the official notebook trained locally. To reproduce the run, follow [RUNNING.md](RUNNING.md), create a Python 3.11–3.13 virtual environment, install `requirements.txt`, and run notebook sections 1–5 in order.
