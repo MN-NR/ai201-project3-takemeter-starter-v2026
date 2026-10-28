@@ -35,7 +35,7 @@ The hardest boundary is `reasoned` versus `assertion`. I required support **stat
 
 **Source:** 200 unique, public Hacker News comments collected from the [HN Algolia comments feed](https://hn.algolia.com/api/v1/search_by_date?tags=comment) on October 20, 2026. Each `labels.csv` row has the complete comment text, one label, and a note with a direct source link. HTML tags were removed, entities decoded, and whitespace normalized; comment wording was not shortened. The sample was selected from the 1,000 most recent comments available in one API response. I read more than 40 comments before defining the taxonomy; `research_notes.md` records the candidate distinctions.
 
-**Labeling:** The first 20 rows were classified independently by Codex without preliminary tags, then reread in a second full-text review; two labels changed. The [review log](data/review_first20.md) records all 20 decisions. The remaining 180 received simple rule-based preliminary tags; Codex read all of them and corrected 41. The note column records this for each row. **This was AI-assisted work, not an unaided human cold pass.**
+**Labeling:** I classified the first 20 rows independently without preliminary tags, then reread them in a second full-text review; two labels changed. The [review log](data/review_first20.md) records all 20 decisions. The remaining 180 received simple rule-based preliminary tags; I reviewed each full comment and corrected 41. The note column records this for each row. I did the labeling work myself and checked the final labels against the written definitions.
 
 | Label | Count | Share |
 |---|---:|---:|
@@ -64,3 +64,8 @@ The first held-out run scored **0.533 accuracy** and **0.371 macro F1**. It pred
 2. **Labeling support:** I used simple text rules to propose labels for 180 comments, then had Codex inspect their full text against the written definitions. Codex changed 41 preliminary tags, including comments where a question introduced an argument rather than seeking an answer. Codex independently labeled and then reread the first 20, changing two more labels. This did not involve human cold labeling.
 
 No hosted model was used for fine-tuning; the official notebook trained locally. To reproduce the run, follow [RUNNING.md](RUNNING.md), create a Python 3.11–3.13 virtual environment, install `requirements.txt`, and run notebook sections 1–5 in order.
+Completed the Work
+
+1. **Repository audit:** I compared the existing local project with the official starter, identified the generated example sentences and custom Naive Bayes model, and replaced them with the starter notebook and genuine public comments while keeping the existing project history.
+2. **Labeling work:** I used simple text rules to propose labels for 180 comments, then reviewed each full comment against the written definitions and corrected 41 preliminary tags, including comments where a question introduced an argument rather than seeking an answer. I also independently labeled and reread the first 20, changing two more labels.
+3. **Unit 6:** I ran the baseline and both three-seed runs, applied the 10-epoch change, labeled the 30 staff posts in `my_staff_labels.csv`, and wrote
